@@ -14,19 +14,19 @@ const dbConnection: Promise<any> = new Sqlite("my.db").then(db => {
     console.log("open db erro", error);
 });
 
-export function insert(firstname: string, lastname: string): Promise<number> {
+export function insert(table: string, fields:string, values:string): Promise<number> {
 
     return dbConnection.then((db) => {
-        return db.execSQL("INSERT INTO people (firstname, lastname) values (?,?)", [firstname, lastname]).then((value: number) => {
+        return db.execSQL(`INSERT INTO ${table} (${fields}) values (${values})`).then((value: number) => {
             return Promise.resolve(value);
         });
     })
 }
 
-export function select(): Promise<string[]> {
-    return dbConnection.then(db => db.all("SELECT * FROM people"));
+export function select(table: string): Promise<string[]> {
+    return dbConnection.then(db => db.all(`SELECT * FROM ${table}`));
 }
 
-export function remove(filter: string){
-    return dbConnection.then(db => db.execSQL("DELETE FROM people where " + filter));
+export function remove(table:string, filter: string): Promise<number>{
+    return dbConnection.then(db => db.execSQL(`DELETE FROM ${table} where ${filter}`));
 }

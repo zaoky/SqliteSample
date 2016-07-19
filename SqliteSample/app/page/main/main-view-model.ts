@@ -30,7 +30,7 @@ export class MainViewModel extends Observable {
     }
 
     insert() {
-        Database.insert(this.FirstName, this.LastName).then(id => {
+        Database.insert("people", "firstname, lastname", `'${this.FirstName}', '${this.LastName}'`).then(id => {
             console.log("insert success", id);
         }, error => {
             console.log("insert error", error);
@@ -38,12 +38,20 @@ export class MainViewModel extends Observable {
     }
 
     select() {
-        Database.select().then(rows => {
+        Database.select("people").then(rows => {
             for (var row in rows) {
                 console.log("result", rows[row]);
             }
         }, error => {
             console.log("select error", error);
+        });
+    }
+
+    remove(){
+        Database.remove("people", `firstname = '${this.FirstName}'`).then(id => {
+            console.log("remove success", id);
+        }, error => {
+            console.log("remove error", error);
         });
     }
 }

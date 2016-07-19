@@ -6,6 +6,7 @@
         <StackLayout orientation="horizontal">
             <Button text="insert" tap="{{ insert }}" />
             <Button text="select" tap="{{ select }}" />
+            <Button text="delete" tap="{{ remove }}" />
         </StackLayout>
     </StackLayout>
 </Page>
