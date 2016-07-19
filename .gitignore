@@ -2,7 +2,6 @@ lib/
 node_modules/
 platforms/
 tmp/
-.vscode/
 .alm/
 **/app/**/*.js
 **/app/**/*.js.map
