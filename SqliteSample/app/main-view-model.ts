@@ -1,6 +1,5 @@
 import { Observable } from 'data/observable';
 import * as Database from './services/DatabaseService';
-let Sqlite = require( 'nativescript-sqlite' );
 
 export class MainViewModel extends Observable{
     _firstname: string = "";
