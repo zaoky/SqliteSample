@@ -7,3 +7,4 @@ To follow this sample please go to this [url](http://www.nativescriptsnacks.com/
 - [ ] Add update sample
 - [ ] Add remove sample
 - [ ] Review code to complete typing as needed
+- [ ] Add fake data to work with
