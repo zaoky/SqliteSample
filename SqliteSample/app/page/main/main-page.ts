@@ -3,8 +3,8 @@ import { Page } from 'ui/page';
 import { MainViewModel } from './main-view-model';
 
 export function onLoaded(args: EventData) {
-    let viewModel = new MainViewModel();
+    let vm = new MainViewModel();
     let page = <Page>args.object;
-    page.bindingContext = viewModel;
+    page.bindingContext = vm;
 }
 
