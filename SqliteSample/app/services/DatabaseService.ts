@@ -26,3 +26,7 @@ export function insert(firstname: string, lastname: string): Promise<number> {
 export function select(): Promise<string[]> {
     return dbConnection.then(db => db.all("SELECT * FROM people"));
 }
+
+export function remove(filter: string){
+    return dbConnection.then(db => db.execSQL("DELETE FROM people where " + filter));
+}
