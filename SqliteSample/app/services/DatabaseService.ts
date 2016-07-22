@@ -16,7 +16,7 @@ const dbConnection: Promise<any> = new Sqlite("my.db").then(db => {
 });
 
 export function insert(entity:any): Promise<number> {
- let query: string = `INSERT INTO ${entity['TableName']} `;
+ 
  let fields: string[] = [];
  let values: string[] = [];
 
@@ -27,8 +27,7 @@ export function insert(entity:any): Promise<number> {
         }
     }
 
-    query += '(' + fields.join() + ') values (' + values.join() + ')'
-
+ let query: string = `INSERT INTO ${entity['TableName']} (${fields.join()}) values (${values.join()})`;  
     return dbConnection.then((db) => {
         return db.execSQL(query).then((value: number) => {
             return Promise.resolve(value);
@@ -45,13 +44,13 @@ export function remove(table:string, filter: string): Promise<number>{
 }
 
 export function update(entity:any, filter: string) {
-    let query: string = `UPDATE ${entity['TableName']} set `;
+    
     let fields: string[] = [];
     for(var row in Object.keys(entity)){
         if(Object.keys(entity)[row] != 'TableName' && Object.keys(entity)[row] != 'ID'){
             fields.push(` ${Object.keys(entity)[row]} = '${entity[Object.keys(entity)[row]]}'`);
         }
     }
-    query += fields.join() + ' ' + filter;
+    let query: string = `UPDATE ${entity['TableName']} set ${fields.join()} ${filter}`;
     return dbConnection.then(db => db.execSQL(query));
 }
