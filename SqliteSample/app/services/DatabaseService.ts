@@ -44,7 +44,7 @@ export function remove(table:string, filter: string): Promise<number>{
     return dbConnection.then(db => db.execSQL(`DELETE FROM ${table} where ${filter}`));
 }
 
-export function betterUpdate(entity:any, filter: string) {
+export function update(entity:any, filter: string) {
     let query: string = `UPDATE ${entity['TableName']} set `;
     let fields: string[] = [];
     for(var row in Object.keys(entity)){

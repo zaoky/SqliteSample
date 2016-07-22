@@ -37,7 +37,7 @@ export class MainViewModel extends Observable {
     }
 
     update(){
-        Database.betterUpdate(this.Person, `where firstname = '${this.Person.firstname}'`).then(id =>{
+        Database.update(this.Person, `where firstname = '${this.Person.firstname}'`).then(id =>{
             console.log("update success", id);
         }, error =>{
             console.log("update error", error);
