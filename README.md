@@ -5,7 +5,7 @@ To follow this sample please go to this [url](http://www.nativescriptsnacks.com/
 ## TO DO TASKS
 
 - [ ] Change design and add a more realistic and usable one
-- [ ] Add update sample
+- [x] Add update sample
 - [x] Add remove sample
 - [ ] Review code to complete typing as needed
 - [ ] Add fake data to work with
