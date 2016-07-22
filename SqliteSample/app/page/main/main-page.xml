@@ -1,11 +1,13 @@
 <Page 
     xmlns="http://www.nativescript.org/tns.xsd" loaded="onLoaded" navigatedTo="onNavigatedTo">
     <StackLayout>
-        <TextField id="firstname" hint="First Name" text="{{ FirstName }}" />
-        <TextField id="lastname" hint="Last Name" text="{{ LastName }}" />
+        <TextField id="firstname" hint="First Name" text="{{ Person.firstname }}" />
+        <TextField id="lastname" hint="Last Name" text="{{ Person.lastname }}" />
         <StackLayout orientation="horizontal">
             <Button text="insert" tap="{{ insert }}" />
             <Button text="select" tap="{{ select }}" />
+            <Button text="delete" tap="{{ remove }}" />
+            <Button text="update" tap="{{ update }}" />
         </StackLayout>
     </StackLayout>
 </Page>
