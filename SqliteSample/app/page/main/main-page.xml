@@ -9,5 +9,23 @@
             <Button text="delete" tap="{{ remove }}" />
             <Button text="update" tap="{{ update }}" />
         </StackLayout>
+
+        <ListView items="{{ PersonList }}" itemLoading="onItemLoading" itemTap="onItemTap">
+            <ListView.itemTemplate>
+            <GridLayout columns="auto, *" cssClass="list-view-row">
+                 <StackLayout orientation="vertical" col="1">
+                    <StackLayout orientation="horizontal">
+                        <Label id="lblfirstname" text="{{ 'Firstname: ' + firstname }}" textWrap="true" />
+                        <Label id="lblLastname" text="{{ ' Lastname: ' + lastname }}" textWrap="true" />
+                    </StackLayout>
+                    <StackLayout orientation="horizontal">
+                        <Label id="lblId" text="{{ 'ID: ' + ID }}" textWrap="true" />
+                        <Label id="lblCreated" text="{{ ' Created At: ' + CreatedAt }}" textWrap="true" />
+                    </StackLayout>
+                </StackLayout>
+              </GridLayout>
+               
+            </ListView.itemTemplate>
+        </ListView>
     </StackLayout>
 </Page>

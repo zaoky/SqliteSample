@@ -6,6 +6,7 @@ const dbConnection: Promise<any> = new Sqlite("my.db").then(db => {
    return db.execSQL("CREATE TABLE IF NOT EXISTS person (ID INTEGER PRIMARY KEY AUTOINCREMENT, firstname TEXT, lastname TEXT, CreatedAt TEXT)")
    .then(id => {
         console.log("table created", id);
+        db.resultType(Sqlite.RESULTSASOBJECT);
         return Promise.resolve(db);
     }, error => {
         console.log("create table error", error);
@@ -35,8 +36,8 @@ export function insert(entity:any): Promise<number> {
     })
 }
 
-export function select(table: string): Promise<string[]> {
-    return dbConnection.then(db => db.all(`SELECT * FROM ${table}`));
+export function select(table: string): Promise<any[]> {
+   return dbConnection.then(db => db.all(`SELECT * FROM ${table}`));
 }
 
 export function remove(table:string, filter: string): Promise<number>{

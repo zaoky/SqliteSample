@@ -11,5 +11,4 @@ class PersonModel implements BaseModelInterface  {
     lastname:string = "";
     constructor() {
     }
-    
 }

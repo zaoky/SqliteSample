@@ -1,15 +1,17 @@
 import { Observable } from 'data/observable';
+import { ObservableArray } from 'data/observable-array';
 import * as Database from '../../services/DatabaseService';
 import { PersonModel } from '../../services/person-model';
+import { ItemEventData } from 'ui/list-view';
 
 export class MainViewModel extends Observable {
     Person: PersonModel;
-
+    PersonList: ObservableArray<PersonModel> = new ObservableArray<PersonModel>();
     constructor() {
         super();
         this.Person = new PersonModel();
     }
-
+    
     insert() {
         Database.insert(this.Person).then(id => {
             console.log("insert success", id);
@@ -20,9 +22,17 @@ export class MainViewModel extends Observable {
 
     select() {
         Database.select(this.Person.TableName).then(rows => {
-            for (var row in rows) {
-                console.log("result", rows[row]);
+            let tempList = new ObservableArray<PersonModel>();
+            for (var i = 0; i < rows.length; i++) {
+                let model = new PersonModel();
+                model.ID = rows[i]["ID"];
+                model.firstname = rows[i]["firstname"];
+                model.lastname = rows[i]["lastname"];
+                model.CreatedAt = rows[i]["CreatedAt"];
+                tempList.push(model);
+                console.log("rows ", rows.length);
             }
+            this.PersonList = tempList;
         }, error => {
             console.log("select error", error);
         });
