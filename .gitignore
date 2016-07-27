@@ -5,3 +5,4 @@ tmp/
 .alm/
 **/app/**/*.js
 **/app/**/*.js.map
+typings/
