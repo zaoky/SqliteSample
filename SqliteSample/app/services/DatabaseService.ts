@@ -22,7 +22,7 @@ export function insert(entity:any): Promise<number> {
  let values: string[] = [];
 
   for(var row in Object.keys(entity)){
-        if(Object.keys(entity)[row] != 'TableName' && Object.keys(entity)[row] != 'ID'){
+        if(Object.keys(entity)[row] != 'ID'){
             fields.push(`${Object.keys(entity)[row]}`);
             values.push(`'${entity[Object.keys(entity)[row]]}'`);
         }
@@ -48,7 +48,7 @@ export function update(entity:any, filter: string) {
     
     let fields: string[] = [];
     for(var row in Object.keys(entity)){
-        if(Object.keys(entity)[row] != 'TableName' && Object.keys(entity)[row] != 'ID'){
+        if(Object.keys(entity)[row] != 'ID'){
             fields.push(` ${Object.keys(entity)[row]} = '${entity[Object.keys(entity)[row]]}'`);
         }
     }
