@@ -16,7 +16,11 @@ export class MainViewModel extends Observable {
     }
 
     onItemTap(args: ItemEventData) {
-        this.Person = this.PersonList.getItem(args.index);
+        let model = this.PersonList.getItem(args.index);
+        this.Person.ID = model.ID;
+        this.Person.CreatedAt = model.CreatedAt;
+        this.Person.firstname = model.firstname;
+        this.Person.lastname = model.lastname;
         this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'Person', value: this.Person });
     }
 
@@ -29,9 +33,9 @@ export class MainViewModel extends Observable {
         });
     }
 
-    select(isUpdated: boolean = false) {
+    select() {
         Database.select(this.Person.TableName).then(rows => {
-            for (var i = 0; i < rows.length; i++) {
+            for (let i = 0; i < rows.length; i++) {
                 let model = new PersonModel();
                 model.ID = rows[i]["ID"];
                 model.firstname = rows[i]["firstname"];
@@ -39,12 +43,6 @@ export class MainViewModel extends Observable {
                 model.CreatedAt = rows[i]["CreatedAt"];
                 if ((this.PersonList.filter(person => person.ID == model.ID)).length === 0) {
                     this.PersonList.push(model);
-                    console.log("pato");
-
-                } else if (isUpdated == true) {
-                    this.PersonList.setItem(this.PersonList.indexOf(this.Person), model);
-                    console.log("pato2");
-
                 }
             }
             this.Person.firstname = '';
@@ -60,9 +58,9 @@ export class MainViewModel extends Observable {
         if (this.Person.firstname != '') {
             Database.remove(this.Person.TableName, `firstname = '${this.Person.firstname}'`).then(id => {
                 console.log("remove success", id);
-                for (var i = 0; i < this.PersonList.length; i++) {
-                    if (this.PersonList.getItem(i) === this.Person) {
-                        this.PersonList.splice(i, 1);
+                for (let p = 0; p < this.PersonList.length; p++) {
+                    if (this.PersonList.getItem(p) === this.Person) {
+                        this.PersonList.splice(p, 1);
                         break;
                     }
                 }
@@ -80,7 +78,18 @@ export class MainViewModel extends Observable {
         if (this.Person.firstname) {
             Database.update(this.Person, `where firstname = '${this.Person.firstname}'`).then(id => {
                 console.log("update success", id);
-                this.select(true);
+                for (let k = 0; k < this.PersonList.length; k++) {
+                    let model = this.PersonList.getItem(k);
+                    if (model.ID == this.Person.ID) {
+                        model.firstname = this.Person.firstname;
+                        model.lastname = this.Person.lastname;
+                        this.PersonList.setItem(k, model);
+                        break;
+                    }
+                }
+                this.set("PersonList", this.PersonList);
+                this.Person = new PersonModel();
+                this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'Person', value: this.Person });
             }, error => {
                 console.log("update error", error);
             });

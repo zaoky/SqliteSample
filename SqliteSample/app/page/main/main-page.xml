@@ -5,7 +5,6 @@
         <TextField id="lastname" hint="Last Name" text="{{ Person.lastname }}" />
         <StackLayout orientation="horizontal">
             <Button text="insert" tap="{{ insert }}" />
-            <Button text="select" tap="{{ select }}" />
             <Button text="delete" tap="{{ remove }}" />
             <Button text="update" tap="{{ update }}" />
         </StackLayout>
