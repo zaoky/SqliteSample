@@ -5,7 +5,7 @@
 }
 
 button {
-    font-size: 42;
+    font-size: 30;
     horizontal-align: center;
 }
 
@@ -17,11 +17,18 @@ button {
     text-align: center;
 }
 
-.break-row {
-    padding: 12;
-    background-color: #FFFBF0;
+.list-view-row {
+    padding: 12 12 12 12;
 }
 
-.list-view-row {
-    padding: 12 12 12 0;
+.header-view-row{
+    font-size: 16;
+    color: coral;
+    margin: 5;
+}
+
+.text-header-row{
+    font-size: 15;
+    color: black;
+    margin: 5;
 }

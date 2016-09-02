@@ -10,11 +10,13 @@
     }
   },
   "dependencies": {
+    "faker": "^3.1.0",
     "lodash": "^4.14.0",
     "nativescript-sqlite": "^1.0.10",
     "tns-core-modules": "2.1.0"
   },
   "devDependencies": {
+    "@types/faker": "0.0.29",
     "babel-traverse": "6.10.4",
     "babel-types": "6.11.1",
     "babylon": "6.8.4",

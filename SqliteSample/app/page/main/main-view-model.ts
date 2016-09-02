@@ -4,15 +4,31 @@ import * as Database from '../../services/DatabaseService';
 import { PersonModel } from '../../services/person-model';
 import { ItemEventData } from 'ui/list-view';
 import { ListView } from 'ui/list-view';
-import * as lodash from 'lodash';
+import { PersonService } from '../../services/person-service'
 
 export class MainViewModel extends Observable {
     Person: PersonModel;
     PersonList: ObservableArray<PersonModel> = new ObservableArray<PersonModel>();
-
+    private _personService: PersonService;
     constructor() {
         super();
         this.Person = new PersonModel();
+        this._personService = new PersonService();
+        this.set('isLoading', true);
+        this._personService.loadPeople().then((result: Array<PersonModel>) => {
+            this.pushPeople(result);
+            this.onDataLoaded();
+        })
+    }
+    private pushPeople(peopleFromService: Array<PersonModel>){
+        peopleFromService.forEach(element => {
+            this.PersonList.push(element);
+        });
+    }
+
+    private onDataLoaded(){
+        this.set("isLoading",false);
+        this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'PersonList', value: this.PersonList });        
     }
 
     onItemTap(args: ItemEventData) {
