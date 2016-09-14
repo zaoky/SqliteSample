@@ -20,15 +20,15 @@ export class MainViewModel extends Observable {
             this.onDataLoaded();
         })
     }
-    private pushPeople(peopleFromService: Array<PersonModel>){
+    private pushPeople(peopleFromService: Array<PersonModel>) {
         peopleFromService.forEach(element => {
             this.PersonList.push(element);
         });
     }
 
-    private onDataLoaded(){
-        this.set("isLoading",false);
-        this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'PersonList', value: this.PersonList });        
+    private onDataLoaded() {
+        this.set("isLoading", false);
+        this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'PersonList', value: this.PersonList });
     }
 
     onItemTap(args: ItemEventData) {
@@ -63,6 +63,8 @@ export class MainViewModel extends Observable {
             }
             this.Person.firstname = '';
             this.Person.lastname = '';
+            this.Person.ID = 0;
+            this.Person.CreatedAt = '';
             this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'Person', value: this.Person });
             this.set("PersonList", this.PersonList);
         }, error => {
@@ -82,8 +84,10 @@ export class MainViewModel extends Observable {
                 }
                 this.Person.firstname = '';
                 this.Person.lastname = '';
+                this.Person.ID = 0;
+                this.Person.CreatedAt = '';
                 this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'Person', value: this.Person });
-                this.set("PersonList", this.PersonList);
+                this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'PersonList', value: this.PersonList });
             }, error => {
                 console.log("remove error", error);
             });
@@ -104,7 +108,10 @@ export class MainViewModel extends Observable {
                     }
                 }
                 this.set("PersonList", this.PersonList);
-                this.Person = new PersonModel();
+                this.Person.firstname = '';
+                this.Person.lastname = '';
+                this.Person.ID = 0;
+                this.Person.CreatedAt = '';
                 this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'Person', value: this.Person });
             }, error => {
                 console.log("update error", error);
