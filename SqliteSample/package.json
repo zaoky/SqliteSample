@@ -10,9 +10,11 @@
     }
   },
   "dependencies": {
+    "@types/object-assign": "^4.0.28",
     "faker": "^3.1.0",
     "lodash": "^4.14.0",
     "nativescript-sqlite": "^1.0.10",
+    "object-assign": "^4.1.0",
     "tns-core-modules": "2.1.0"
   },
   "devDependencies": {

@@ -1,8 +1,8 @@
 <Page 
     xmlns="http://www.nativescript.org/tns.xsd" loaded="onLoaded" navigatedTo="onNavigatedTo">
     <StackLayout>
-        <TextField id="firstname" hint="First Name" text="{{ Person.firstname }}" />
-        <TextField id="lastname" hint="Last Name" text="{{ Person.lastname }}" />
+        <TextField id="firstname" hint="First Name" text="{{ Firstname }}" />
+        <TextField id="lastname" hint="Last Name" text="{{ Lastname }}" />
         <StackLayout orientation="horizontal">
             <Button text="insert" tap="{{ insert }}" />
             <Button text="delete" tap="{{ remove }}" />

@@ -5,20 +5,21 @@ import { PersonModel } from '../../services/person-model';
 import { ItemEventData } from 'ui/list-view';
 import { ListView } from 'ui/list-view';
 import { PersonService } from '../../services/person-service'
+let objectAssign = require("object-assign");
 
 export class MainViewModel extends Observable {
-    Person: PersonModel;
+    _person: PersonModel;
     PersonList: ObservableArray<PersonModel> = new ObservableArray<PersonModel>();
     private _personService: PersonService;
+    _firstname: string;
+    _lastname: string;
+
     constructor() {
         super();
-        this.Person = new PersonModel();
+        this._person = new PersonModel();
         this._personService = new PersonService();
         this.set('isLoading', true);
-        this._personService.loadPeople().then((result: Array<PersonModel>) => {
-            this.pushPeople(result);
-            this.onDataLoaded();
-        })
+        this.select();
     }
     private pushPeople(peopleFromService: Array<PersonModel>) {
         peopleFromService.forEach(element => {
@@ -32,16 +33,18 @@ export class MainViewModel extends Observable {
     }
 
     onItemTap(args: ItemEventData) {
-        let model = this.PersonList.getItem(args.index);
-        this.Person.ID = model.ID;
-        this.Person.CreatedAt = model.CreatedAt;
-        this.Person.firstname = model.firstname;
-        this.Person.lastname = model.lastname;
-        this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'Person', value: this.Person });
+        let personItem = this.PersonList.getItem(args.index);
+        this._person = objectAssign({}, personItem);
+        Object.defineProperty(this._person, "TableName", {
+            enumerable: false,
+            configurable: false,
+            value: personItem.TableName,
+            writable: false
+        });
     }
 
     insert() {
-        Database.insert(this.Person).then(id => {
+        Database.insert(this._person).then(id => {
             console.log("insert success", id);
             this.select();
         }, error => {
@@ -50,7 +53,7 @@ export class MainViewModel extends Observable {
     }
 
     select() {
-        Database.select(this.Person.TableName).then(rows => {
+        Database.select(this._person.TableName).then(rows => {
             for (let i = 0; i < rows.length; i++) {
                 let model = new PersonModel();
                 model.ID = rows[i]["ID"];
@@ -61,33 +64,28 @@ export class MainViewModel extends Observable {
                     this.PersonList.push(model);
                 }
             }
-            this.Person.firstname = '';
-            this.Person.lastname = '';
-            this.Person.ID = 0;
-            this.Person.CreatedAt = '';
-            this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'Person', value: this.Person });
-            this.set("PersonList", this.PersonList);
+            this._person = new PersonModel();
+            if (this.PersonList.length === 0) {
+                this._personService.loadPeople().then((result: Array<PersonModel>) => {
+                    this.pushPeople(result);
+                    this.onDataLoaded();
+                });
+            }
         }, error => {
             console.log("select error", error);
         });
     }
 
     remove() {
-        if (this.Person.firstname != '') {
-            Database.remove(this.Person.TableName, `firstname = '${this.Person.firstname}'`).then(id => {
-                console.log("remove success", id);
+        if (this._person.ID > 0) {
+            Database.remove(this._person.TableName, `ID = '${this._person.ID}'`).then(id => {
                 for (let p = 0; p < this.PersonList.length; p++) {
-                    if (this.PersonList.getItem(p) === this.Person) {
+                    if (this.PersonList.getItem(p).ID === this._person.ID) {
                         this.PersonList.splice(p, 1);
                         break;
                     }
                 }
-                this.Person.firstname = '';
-                this.Person.lastname = '';
-                this.Person.ID = 0;
-                this.Person.CreatedAt = '';
-                this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'Person', value: this.Person });
-                this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'PersonList', value: this.PersonList });
+                this._person = new PersonModel();
             }, error => {
                 console.log("remove error", error);
             });
@@ -95,27 +93,50 @@ export class MainViewModel extends Observable {
     }
 
     update() {
-        if (this.Person.firstname) {
-            Database.update(this.Person, `where firstname = '${this.Person.firstname}'`).then(id => {
+        if (this._person.ID > 0 ) {
+            Database.update(this._person, `where ID = '${this._person.ID}'`).then(id => {
                 console.log("update success", id);
                 for (let k = 0; k < this.PersonList.length; k++) {
                     let model = this.PersonList.getItem(k);
-                    if (model.ID == this.Person.ID) {
-                        model.firstname = this.Person.firstname;
-                        model.lastname = this.Person.lastname;
+                    if (model.ID == this._person.ID) {
+                        model.firstname = this.Firstname;
+                        model.lastname = this.Lastname;
                         this.PersonList.setItem(k, model);
                         break;
                     }
                 }
-                this.set("PersonList", this.PersonList);
-                this.Person.firstname = '';
-                this.Person.lastname = '';
-                this.Person.ID = 0;
-                this.Person.CreatedAt = '';
-                this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'Person', value: this.Person });
+              this._person = new PersonModel();
             }, error => {
                 console.log("update error", error);
             });
         }
+    }
+
+    public get Firstname(): string {
+        return this._firstname;
+    }
+
+    public set Firstname(value: string) {
+        this._firstname = value;
+        this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'Firstname', value: this._firstname });
+    }
+
+    public get Lastname(): string {
+        return this._lastname;
+    }
+
+    public set Lastname(value: string) {
+        this._lastname = value;
+        this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'Lastname', value: this._lastname });
+    }
+
+    public get CurrentPerson(): PersonModel {
+        return this._person;
+    }
+
+    public set CurrentPerson(value: PersonModel) {
+        this._person = value;
+        this.Firstname = this._person.firstname;
+        this.Lastname = this._person.lastname;
     }
 }
