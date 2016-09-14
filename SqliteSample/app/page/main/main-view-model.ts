@@ -16,7 +16,7 @@ export class MainViewModel extends Observable {
 
     constructor() {
         super();
-        this._person = new PersonModel();
+        this.CurrentPerson = new PersonModel();
         this._personService = new PersonService();
         this.set('isLoading', true);
         this.select();
@@ -34,8 +34,8 @@ export class MainViewModel extends Observable {
 
     onItemTap(args: ItemEventData) {
         let personItem = this.PersonList.getItem(args.index);
-        this._person = objectAssign({}, personItem);
-        Object.defineProperty(this._person, "TableName", {
+        this.CurrentPerson = objectAssign({}, personItem);
+        Object.defineProperty(this.CurrentPerson, "TableName", {
             enumerable: false,
             configurable: false,
             value: personItem.TableName,
@@ -44,7 +44,7 @@ export class MainViewModel extends Observable {
     }
 
     insert() {
-        Database.insert(this._person).then(id => {
+        Database.insert(this.CurrentPerson).then(id => {
             console.log("insert success", id);
             this.select();
         }, error => {
@@ -53,7 +53,7 @@ export class MainViewModel extends Observable {
     }
 
     select() {
-        Database.select(this._person.TableName).then(rows => {
+        Database.select(this.CurrentPerson.TableName).then(rows => {
             for (let i = 0; i < rows.length; i++) {
                 let model = new PersonModel();
                 model.ID = rows[i]["ID"];
@@ -64,7 +64,7 @@ export class MainViewModel extends Observable {
                     this.PersonList.push(model);
                 }
             }
-            this._person = new PersonModel();
+            this.CurrentPerson = new PersonModel();
             if (this.PersonList.length === 0) {
                 this._personService.loadPeople().then((result: Array<PersonModel>) => {
                     this.pushPeople(result);
@@ -77,15 +77,15 @@ export class MainViewModel extends Observable {
     }
 
     remove() {
-        if (this._person.ID > 0) {
-            Database.remove(this._person.TableName, `ID = '${this._person.ID}'`).then(id => {
+        if (this.CurrentPerson.ID > 0) {
+            Database.remove(this.CurrentPerson.TableName, `ID = '${this.CurrentPerson.ID}'`).then(id => {
                 for (let p = 0; p < this.PersonList.length; p++) {
-                    if (this.PersonList.getItem(p).ID === this._person.ID) {
+                    if (this.PersonList.getItem(p).ID === this.CurrentPerson.ID) {
                         this.PersonList.splice(p, 1);
                         break;
                     }
                 }
-                this._person = new PersonModel();
+                this.CurrentPerson = new PersonModel();
             }, error => {
                 console.log("remove error", error);
             });
@@ -93,19 +93,19 @@ export class MainViewModel extends Observable {
     }
 
     update() {
-        if (this._person.ID > 0 ) {
-            Database.update(this._person, `where ID = '${this._person.ID}'`).then(id => {
+        if (this.CurrentPerson.ID > 0 ) {
+            Database.update(this.CurrentPerson, `where ID = '${this.CurrentPerson.ID}'`).then(id => {
                 console.log("update success", id);
                 for (let k = 0; k < this.PersonList.length; k++) {
                     let model = this.PersonList.getItem(k);
-                    if (model.ID == this._person.ID) {
+                    if (model.ID == this.CurrentPerson.ID) {
                         model.firstname = this.Firstname;
                         model.lastname = this.Lastname;
                         this.PersonList.setItem(k, model);
                         break;
                     }
                 }
-              this._person = new PersonModel();
+              this.CurrentPerson = new PersonModel();
             }, error => {
                 console.log("update error", error);
             });
