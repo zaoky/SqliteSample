@@ -18,6 +18,8 @@ export class MainViewModel extends Observable {
         super();
         this.CurrentPerson = new PersonModel();
         this._personService = new PersonService();
+        this.Firstname = '';
+        this.Lastname = '';
         this.set('isLoading', true);
         this.select();
     }
@@ -118,6 +120,7 @@ export class MainViewModel extends Observable {
 
     public set Firstname(value: string) {
         this._firstname = value;
+        this._person.firstname = value;
         this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'Firstname', value: this._firstname });
     }
 
@@ -127,6 +130,7 @@ export class MainViewModel extends Observable {
 
     public set Lastname(value: string) {
         this._lastname = value;
+        this._person.lastname = value;
         this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: 'Lastname', value: this._lastname });
     }
 

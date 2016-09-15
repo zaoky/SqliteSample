@@ -5,7 +5,7 @@ export /**
  */
     class PersonModel implements BaseModelInterface {
     ID: number = 0;
-    CreatedAt: string = new Date(Date.now()).toLocaleString();
+    CreatedAt: string = new Date(Date.now()).toDateString();
     TableName: string = "person";
     firstname: string = "";
     lastname: string = "";
@@ -17,4 +17,4 @@ export /**
             configurable: false
         });
     }
-}
+} 
