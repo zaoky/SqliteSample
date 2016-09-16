@@ -14,7 +14,7 @@ Run `tns plugin add nativescript-sqlite` , see this [url](https://github.com/Nat
 - [x] Add update sample
 - [x] Add remove sample
 - [ ] Review code to complete typing as needed
-- [ ] Add fake data to work with
+- [x] Add fake data to work with
 
 #Contributing
 
