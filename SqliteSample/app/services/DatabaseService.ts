@@ -1,4 +1,3 @@
-import { PersonModel } from '../services/person-model';
 let Sqlite = require('nativescript-sqlite');
 
 

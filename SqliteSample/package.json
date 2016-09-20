@@ -6,7 +6,7 @@
   "nativescript": {
     "id": "org.nativescript.SqliteSample",
     "tns-android": {
-      "version": "2.2.0"
+      "version": "2.3.0"
     }
   },
   "dependencies": {
@@ -15,7 +15,7 @@
     "lodash": "^4.14.0",
     "nativescript-sqlite": "^1.0.10",
     "object-assign": "^4.1.0",
-    "tns-core-modules": "2.1.0"
+    "tns-core-modules": "^2.3.0"
   },
   "devDependencies": {
     "@types/faker": "0.0.29",
